@@ -9,27 +9,27 @@ type iconProps = PropsWithChildren<{
 
 const Icon = ({name} : iconProps) => {
     switch (name) {
-        case 'cross':
+        case 'CROSS':
             return(
                 <Image style={styles.imageHandler} source={require('../assets/cross.png')}/>
             )
-            break;
-            case 'circle':
+            
+            case 'CIRCLE':
                 return(
                 <Image style={styles.imageHandler} source={require('../assets/circle.png')}/>
                     
                 )
-                break;
+                
     
         default:
-            break;
+            
     }
 }
 
 const styles = StyleSheet.create({
     imageHandler:{
-        height: 60,
-        width: 60
+        height: 70,
+        width: 70
     }
 })
 export default Icon;

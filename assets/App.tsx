@@ -1,4 +1,4 @@
-import { Dimensions, Image, Pressable, SafeAreaView, StatusBar, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, FlatList, Image, Pressable, SafeAreaView, StatusBar, StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
 import Header from './Header'
 import CardHolder from './CardHolder'
@@ -10,7 +10,7 @@ const windowHeight = Dimensions.get('window').height;
 
 export default function App() {
 const [Win,setWin] = useState('')
-const [isCross,setCross] = useState(false)
+const [isCross,setCross] = useState(true)
 const [gameState,setGameState] = useState(new Array(9).fill("empty",0,9))
 
 const Reset = () => {
@@ -26,6 +26,7 @@ const CheckWin = () => {
     gameState[0] !== 'empty'
   ) {
     setWin(`${gameState[0]} WON`);
+    
   } else if (
     gameState[3] !== 'empty' &&
     gameState[3] === gameState[4] &&
@@ -71,6 +72,8 @@ const CheckWin = () => {
   } else if (!gameState.includes('empty', 0)) {
     setWin('DRAW!');
   }
+  
+
 }
 
 const onChangeItem = (itemNumber : number) => {
@@ -91,16 +94,39 @@ if (gameState[itemNumber]==='empty') {
       <View style={styles.headerContainer}> 
       <Text style={styles.headerText}>XOXO</Text>
     </View>
-
-      {(Win!='')?              //winner reveal
-      <View style={styles.textContainer}>
-      <Text style={styles.winningText}>CROSS WON</Text>
+    <View style={styles.turnIndicator}>
+      <View style={styles.IndicatorCard}>
+        <Text style={styles.turnText}>TURN</Text>
+        <View style={styles.XO}>
+    <Image style={[styles.imageHandler,isCross?styles.selectionIndicator: null]} source={require('../assets/cross.png')}/>
+    <Image style={[styles.imageHandler,isCross?null:styles.selectionIndicatorCircle]} source={require('../assets/circle.png')}/>
+        </View>
       </View>
+    </View>
+
+
+      {Win != ''?              //winner reveal
+      <View style={styles.bottomBar2}>
+      <View style={styles.buttonBox}>
+        <Text style={styles.winText}>{Win}</Text>
+    </View>
+    </View>
       :null}
     <View style={styles.TTC}>
       <View style={styles.cardbox}>
         <View style={styles.cardContainer}>
         {/*Here lies TTT */}
+        <FlatList 
+        data={gameState}
+        numColumns={3}
+        style={styles.grid}
+        renderItem={ ({item,index}) => (
+          <Pressable style={styles.box} onPress={()=>onChangeItem(index)} key={index} >
+            <Icons name={item}/>
+          </Pressable>
+        )
+        }
+        />
         </View>
         
       </View>
@@ -109,11 +135,8 @@ if (gameState[itemNumber]==='empty') {
 
       <View style={styles.bottomBar}>
         <View style={styles.buttonBox}>
-          <Pressable>
-          <Text style={styles.button}>Rerty</Text>
-          </Pressable>
-          <Pressable>
-          <Text style={styles.button}>New Game</Text>
+          <Pressable onPress={()=> Reset()}>
+          <Text style={styles.button}>RELOAD</Text>
           </Pressable>
       </View>
 
@@ -131,10 +154,10 @@ const styles = StyleSheet.create({
   },
   cardContainer:{
     
-    height: windowHeight/2.5,
-    width: windowHeight/2.5,
-    backgroundColor: '#1B1E22',
-    borderRadius: 8,
+    
+    justifyContent: 'center',
+    alignItems: 'center'
+    
     
 },
 buttonBox:{
@@ -148,18 +171,32 @@ button: {
   color : '#fff',
   backgroundColor: '#1D75FA',
   padding:15,
-  width: windowHeight/7,
+  width: windowWidth/1.05,
   textAlign: 'center',
-  borderRadius: 6,
+  borderRadius: 8,
   fontFamily: 'PlusJakartaSans-VariableFont_wght',
   fontWeight: '700'
 },
+winText:{
+  color : '#fff',
+  backgroundColor: '#1B1E22',
+  padding:20,
+  width: windowWidth/3,
+  fontSize:12,
+  textAlign: 'center',
+  borderRadius: 8,
+  fontFamily: 'PlusJakartaSans-VariableFont_wght',
+},
 cardbox:{
- 
+  
 },
 bottomBar:{
   position: 'absolute',
-  top: '90%'
+  top: '88%'
+},
+bottomBar2:{
+  position: 'absolute',
+  top: '73%'
 },
 headerContainer:{
   alignItems: 'center',
@@ -183,13 +220,70 @@ winningText:{
   color: '#fff',
   fontFamily: 'PlusJakartaSans-VariableFont_wght',
   fontSize: 12,
-  textAlign: 'center'
+  textAlign: 'center',
+  
 },
 textContainer:{
-  marginVertical: windowHeight/6
+  position: 'absolute',
+  top: '75%',
+  width: windowWidth,
+
 },
 crossDot:{
   width: 80,
   height: 80
+},
+imageHandler:{
+  height: 40,
+  width: 40,
+  margin: 2
+},
+turnIndicator:{
+  justifyContent: 'center',
+  height: windowHeight/6,
+  
+  alignItems: 'center',
+  //backgroundColor: '#fff'
+},
+IndicatorCard:{
+  backgroundColor: '#1B1E22',
+  padding: 10,
+  borderRadius: 10
+
+},
+XO:{
+  flexDirection: 'row',
+  margin: 5
+},
+selectionIndicator:{
+backgroundColor: '#1D75FA',
+borderRadius : 8
+},
+selectionIndicatorCircle:{
+  backgroundColor: '#FFFFFF',
+borderRadius : 8
+},
+
+grid: {
+  backgroundColor: '#1B1E22',
+  padding: 10,
+  borderRadius: 8
+},
+box: {
+  height: windowHeight/8.95,
+    width: windowHeight/8.95,
+
+    alignItems: 'center',
+    justifyContent: 'center',
+
+    backgroundColor: '#22242A',
+    margin: 6,
+    borderRadius: 8
+},
+turnText:{
+  color: '#fff',
+  fontFamily: 'PlusJakartaSans-VariableFont_wght',
+  fontSize: 12,
+  textAlign: 'center',
 }
 })
