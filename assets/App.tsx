@@ -139,8 +139,6 @@ if (gameState[itemNumber]==='empty') {
           <Text style={styles.button}>RELOAD</Text>
           </Pressable>
       </View>
-
-
       </View>
     </SafeAreaView>
     </>
@@ -192,11 +190,11 @@ cardbox:{
 },
 bottomBar:{
   position: 'absolute',
-  top: '88%'
+  top: '90%'
 },
 bottomBar2:{
   position: 'absolute',
-  top: '73%'
+  top: '74.5%'
 },
 headerContainer:{
   alignItems: 'center',
