@@ -6,6 +6,7 @@ An app built on React Native CLI
 
 ```
 cd XOXO
+npm install
 npm start
 ```
 <h6>Feel Free to Impliment Your Own Ideas</h6>
